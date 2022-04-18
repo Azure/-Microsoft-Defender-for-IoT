@@ -1,0 +1,1 @@
+This is installtion teample for IOT sensor for defender for cloud
