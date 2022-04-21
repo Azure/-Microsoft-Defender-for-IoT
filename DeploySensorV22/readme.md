@@ -1,5 +1,8 @@
 This is installation template for IOT sensor for defender for cloud
 
+Copy the VHD link for the IOT sensor installation from the email you received.  
+
+Click on the "Deploy to Azure" button bellow.
   <br>  
     
 Deploy 
