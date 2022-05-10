@@ -27,6 +27,8 @@ To Deploy The Sensor VM, click below button to generate a template deployment in
   <img src="https://aka.ms/deploytoazurebutton" scale="0">
 </a>
 
+
+
 Please update the following screen as follow:
 
 <img src="./Images/Deployment_1.png">
