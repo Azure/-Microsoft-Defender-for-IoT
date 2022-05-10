@@ -32,3 +32,12 @@ To Deploy The Sensor VM, click below button to generate a template deployment in
 Please update the following screen as follow:
 
 <img src="./Images/Deployment_1.png">
+
+1. Please select your Azure subscription to which you would like to deploy the trail service.
+2. Please select an existing resource group or create a new one (Use the hyperlink below the box).
+	a. We recommend creating a new one to easily identify the relevant resources of the trail service.
+3. Please select the Region (Time zone) to which you are deploying the trail service to.
+4. Please leave the location box with its default value, no need to change it.
+5. The trail service can be available to be used with an external IP that will be accessible from the WWW should choose the public IP option set to "True", otherwise the service will use an internal IP only.
+6. Please Paste the link of the VHD copied from the mail recived into this filed.
+	a. Please make sure there are o omitted characters or added ones.
