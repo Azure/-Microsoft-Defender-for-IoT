@@ -29,4 +29,4 @@ To Deploy The Sensor VM, click below button to generate a template deployment in
 
 Please update the following screen as follow:
 
-<img src="./Images/Deployment 1.png">
+<img src="./Images/Deployment_1.png">
