@@ -85,3 +85,8 @@ The PCAP player needs to be enabled to be visibly avialble for use in the UI.
 To do so, please select the "System settings" option from the scrolled down left side menu
 
 <img src="./Images/System_Settings_Menu.png">
+
+Scroll all the way down to the bottom to locate if the PCAP Player is enabled (Shown in the image below in the red top squre) or not.
+If the PCAP player is not shown, proceed to click on the arrow next to the Sensor Managment button (Shown in the image below in the red lower squre)
+
+<img src="./Images/PCAP_Player_Enabled.png">
