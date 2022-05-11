@@ -82,4 +82,6 @@ And change the password (Scroll down)
 ### Exercise 2: Enabling the PCAP player
 
 The PCAP player needs to be enabled to be visibly avialble for use in the UI. 
-To do so, please select the 
+To do so, please select the "System settings" option from the scrolled down left side menu
+
+<img src="./Images/System_Settings_Menu.png">
