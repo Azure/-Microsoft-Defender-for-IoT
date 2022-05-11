@@ -91,7 +91,7 @@ If the PCAP player is not shown, proceed to click on the arrow next to the Senso
 
 <img src="./Images/PCAP_Player_Enabled.png">
 
-From the newly opend menu, scroll down to locate the "Advanced Configuration" option (Show in the image below in the red squre)
+From the newly opend menu, scroll down to locate the "Advanced Configuration" option (Shown in the image below in the red squre)
 
 <img src="./Images/Advanced_Configuration.png">
 
