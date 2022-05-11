@@ -41,3 +41,11 @@ Please update the following screen as follow:
 5. The trail service can be available to be used with an external IP that will be accessible from the WWW should choose the public IP option set to "True", otherwise the service will use an internal IP only.
 6. Please Paste the link of the VHD copied from the mail recived into this filed.
 	a. Please make sure there are o omitted characters or added ones.
+
+
+Once complete please click on the Review + Create button
+Upon validation complition, proceed to click on the Create button to initiate the process.
+<img src="./Images/Review_&_ Create button.png">
+
+
+The process runs for approx. 30 to 60 minutes
