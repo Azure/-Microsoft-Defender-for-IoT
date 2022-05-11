@@ -79,5 +79,7 @@ And change the password (Scroll down)
 
 <img src="./Images/Change_Password_2.png">
 
+### Exercise 2: Enabling the PCAP player
 
-
+The PCAP player needs to be enabled to be visibly avialble for use in the UI. 
+To do so, please select the 
