@@ -55,4 +55,4 @@ The process runs for approx. 30 to 60 minutes
 A message saying *"Your deployment is complete"* is the result of a successful deployment.
 
 To proceed to launch the trail version, identify the IP of the service by the Go to resource group button on the bottom.
-
+<img src="./Images/VM_Resource.png">
