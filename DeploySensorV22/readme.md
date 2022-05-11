@@ -47,3 +47,5 @@ Once complete please click on the Review + Create button
 Upon validation complition, proceed to click on the Create button to initiate the process.
 <img src="./Images/Review_&_ Create button.png">
 
+
+The process runs for approx. 30 to 60 minutes
