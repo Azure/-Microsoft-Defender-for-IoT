@@ -90,3 +90,15 @@ Scroll all the way down to the bottom to locate if the PCAP Player is enabled (S
 If the PCAP player is not shown, proceed to click on the arrow next to the Sensor Managment button (Shown in the image below in the red lower squre).
 
 <img src="./Images/PCAP_Player_Enabled.png">
+
+From the newly opend menu, scroll down to locate the "Advanced Configuration" option (Show in the image below in the red squre)
+
+<img src="./Images/Advanced_Configuration.png">
+
+From the opened "Configuration Selection" menu, scroll down to locate the "PCAP" category
+
+<img src="./Images/PCAP_Option.png">
+
+Scroll down to locate the "enabled" option, it should be set to 1. if it is not so, chne it now, and click the save button and approv to commit the change.
+
+<img src="./Images/Enable_PCAP_Player.png">
