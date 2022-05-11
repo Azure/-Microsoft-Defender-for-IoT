@@ -63,5 +63,9 @@ In the displayed resource list, click on the resource of type - Virtual Machine
 
 In the above image you may identify the IP (If public or private)
 
+Proceed to access the console by using the selected networking method IP (Public or IP) using https:// to proceed the IP
+in such a way
+
+<img src="./Images/Login_Screen.png">
 
 
