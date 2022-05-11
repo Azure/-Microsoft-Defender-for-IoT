@@ -56,3 +56,12 @@ A message saying "Your deployment is complete" is the result of a successful dep
 
 To proceed to launch the trail version, identify the IP of the service by the Go to resource group button on the bottom.
 <img src="./Images/VM_Resource.png">
+
+In the displayed resource list, click on the resource of type - Virtual Machine
+
+<img src="./Images/IP_Settings.png">
+
+In the above image you may identify the IP (If public or private)
+
+
+
