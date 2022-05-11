@@ -68,4 +68,16 @@ in such a way
 
 <img src="./Images/Login_Screen.png">
 
+Use the user name & password as provided by you MS contact.
+
+Upon successful login please proceed immediately to change the password by clicking on the username on the top right corner and selecting 
+View Profile link![image](https://user-images.githubusercontent.com/103533851/167753495-30eb079a-2b1f-441d-b3a6-bc3ce9e78454.png)
+
+<img src="./Images/Change_Password_1.png">
+
+And change the password (Scroll down)
+
+<img src="./Images/Change_Password_2.png">
+
+
 
