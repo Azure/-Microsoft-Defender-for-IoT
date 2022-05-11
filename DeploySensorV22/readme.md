@@ -49,3 +49,9 @@ Upon validation complition, proceed to click on the Create button to initiate th
 
 
 The process runs for approx. 30 to 60 minutes
+
+<img src="./Images/Go_to_Resource_Group.png">
+
+A message saying "Your deployment is complete" is the result of a successful deployment.
+To proceed to launch the trail version, identify the IP of the service by the Go to resource group button on the bottom.![image](https://user-images.githubusercontent.com/103533851/167748979-7096c10a-09c9-4ba1-80f8-6dabe64eda98.png)
+
