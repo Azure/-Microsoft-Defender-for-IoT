@@ -31,7 +31,7 @@ To Deploy The Sensor VM, click below button to generate a template deployment in
 
 Please update the following screen as follow:
 
-<img src="../DeploySensorV22/Images/Deployment_1.png">
+<img src="../DefenderForIOT/DeploySensorV22/Images/Deployment_1.png">
 
 1. Please select your Azure subscription to which you would like to deploy the trail service.
 2. Please select an existing resource group or create a new one (Use the hyperlink below the box).
