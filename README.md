@@ -1,8 +1,7 @@
 # Welcome to Microsoft Defender for IoT Training Lab
 
 <p align="center">
-<img src="./DeploySensorV22/Images/Azure_Defender_For_IoT_Lab.png
-?raw=true">
+<img src="./DeploySensorV22/Images/Azure_Defender_For_IoT_Lab.png">
 </p>
 
 ## Introduction
