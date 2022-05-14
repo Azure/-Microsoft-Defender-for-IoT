@@ -55,50 +55,50 @@ The process runs for approx. 30 to 60 minutes
 A message saying "Your deployment is complete" is the result of a successful deployment.
 
 To proceed to launch the trail version, identify the IP of the service by the Go to resource group button on the bottom.
-<img src="./Images/VM_Resource.png">
+<img src="../Images/VM_Resource.png">
 
 In the displayed resource list, click on the resource of type - Virtual Machine
 
-<img src="./Images/IP_Settings.png">
+<img src="../Images/IP_Settings.png">
 
 In the above image you may identify the IP (If public or private)
 
 Proceed to access the console by using the selected networking method IP (Public or IP) using https:// to proceed the IP
 in such a way
 
-<img src="./Images/Login_Screen.png">
+<img src="../Images/Login_Screen.png">
 
 Use the user name & password as provided by you MS contact.
 
 Upon successful login please proceed immediately to change the password by clicking on the username on the top right corner and selecting 
 View Profile link![image](https://user-images.githubusercontent.com/103533851/167753495-30eb079a-2b1f-441d-b3a6-bc3ce9e78454.png)
 
-<img src="./Images/Change_Password_1.png">
+<img src="../Images/Change_Password_1.png">
 
 And change the password (Scroll down)
 
-<img src="./Images/Change_Password_2.png">
+<img src="../Images/Change_Password_2.png">
 
 ### Exercise 2: Enabling the PCAP player
 
 The PCAP player needs to be enabled to be visibly avialble for use in the UI. 
 To do so, please select the "System settings" option from the scrolled down left side menu
 
-<img src="./Images/System_Settings_Menu.png">
+<img src="../Images/System_Settings_Menu.png">
 
 Scroll all the way down to the bottom to locate if the PCAP Player is enabled (Shown in the image below in the red top squre) or not.
 If the PCAP player is not shown, proceed to click on the arrow next to the Sensor Managment button (Shown in the image below in the red lower squre).
 
-<img src="./Images/PCAP_Player_Enabled.png">
+<img src="../Images/PCAP_Player_Enabled.png">
 
 From the newly opend menu, scroll down to locate the "Advanced Configuration" option (Shown in the image below in the red squre)
 
-<img src="./Images/Advanced_Configuration.png">
+<img src="../Images/Advanced_Configuration.png">
 
 From the opened "Configuration Selection" menu, scroll down to locate the "PCAP" category
 
-<img src="./Images/PCAP_Option.png">
+<img src="../Images/PCAP_Option.png">
 
 Scroll down to locate the "enabled" option, it should be set to 1. if it is not so, chne it now, and click the save button and approv to commit the change.
 
-<img src="./Images/Enable_PCAP_Player.png">
+<img src="../Images/Enable_PCAP_Player.png">
