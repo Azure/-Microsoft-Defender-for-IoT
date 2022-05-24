@@ -19,3 +19,4 @@ Below you can see all the [Resorces](#Modules) that are part of this lab. Althou
 * [Produt Review](https://azure.microsoft.com/en-us/services/iot-defender/)
 * [Setting Up Your Network](https://docs.microsoft.com/en-us/azure/defender-for-iot/organizations/how-to-set-up-your-network)
 * [SPAN Port Illustration](https://docs.microsoft.com/en-us/azure/defender-for-iot/organizations/plan-network-monitoring?msclkid=92a4b61cd13e11ecbc324f18968e7035&tabs=switch-span-port#understand-your-network-architecture)
+* [Demo](https://www.youtube.com/watch?v=JVpgUlHblk0)
