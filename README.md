@@ -16,4 +16,4 @@ To deploy Microsoft Defender for IoT Trainig Lab, **you must have a Microsoft Az
 
 Below you can see all the [Resorces](#Modules) that are part of this lab. Although in general they can be completed in any order, you must start with [Installation & Setup](./DeploySensorV22/Modules/Module-1-Setting-up-the-environment.md) as this deploys the lab environment itself.
 
-* [Produt Review} (https://azure.microsoft.com/en-us/services/iot-defender/)
+* [Produt Review](https://azure.microsoft.com/en-us/services/iot-defender/).
