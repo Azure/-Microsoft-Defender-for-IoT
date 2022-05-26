@@ -1,6 +1,5 @@
-# Module 1 - Setting up the environment
+# Installation and Setup
 
-#### 🎓 Level: 100 (Beginner)
 #### ⌛ Estimated time to complete this lab: 20 minutes
 
 ## Objectives
