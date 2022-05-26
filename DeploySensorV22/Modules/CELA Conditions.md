@@ -12,4 +12,4 @@ Microsoft is providing you with this trial subscription of Microsoft Defender fo
 * Microsoft does not provide any support for the Trial Subscription.  Moreover, the Trial Subscription is excluded from the Service Level Agreements (SLAs) and limited warranties that would otherwise apply for a for-pay subscription. 
 
 
-[Retrun]([https://github.com/Contoso-Hotels-Security/DefenderForIOT/blob/main/README.md](https://github.com/Contoso-Hotels-Security/DefenderForIOT/blob/main/README.md#getting-started)) to the original page 
+[Retrun]([https://github.com/Contoso-Hotels-Security/DefenderForIOT/blob/main/README.md](https://github.com/Contoso-Hotels-Security/DefenderForIOT/blob/main/README.md#getting-started) to the original page 
