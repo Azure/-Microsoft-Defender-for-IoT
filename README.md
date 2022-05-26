@@ -14,7 +14,7 @@ To deploy Microsoft Defender for IoT Trainig Lab, **you must have a Microsoft Az
 
 ## Getting started
 
-Before proceeding further please read the [Microsoft CELA Term and Conditions](https://github.com/Contoso-Hotels-Security/DefenderForIOT/blob/main/DeploySensorV22/Modules/CELA%20Conditions.md)befor using the service. Continuoing byond this point is your acknoledgment and approval of these terms.
+Before proceeding further please read the [Microsoft CELA Term and Conditions](https://github.com/Contoso-Hotels-Security/DefenderForIOT/blob/main/DeploySensorV22/Modules/CELA%20Conditions.md) before using the service. Continuoing byond this point is your acknoledgment and approval of these terms.
 
 Below you can see all the [Resorces](#Modules) that are part of this lab. Although in general they can be completed in any order, you must start with [Installation & Setup](./DeploySensorV22/Modules/Module-1-Setting-up-the-environment.md) as this deploys the lab environment itself.
 
