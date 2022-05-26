@@ -1,4 +1,4 @@
-# Microsoft CELA Condition for Service Use
+# Microsoft CELA Terms and Condition for Service Use
 Welcome to your trial subscription of Microsoft Defender for IoT! 
 
 Microsoft is providing you with this trial subscription of Microsoft Defender for IoT (hereafter, the “Trial Subscription”), subject to the following terms and conditions: 
