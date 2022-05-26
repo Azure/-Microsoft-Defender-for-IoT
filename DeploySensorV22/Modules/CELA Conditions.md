@@ -10,3 +10,6 @@ Microsoft is providing you with this trial subscription of Microsoft Defender fo
 * You may use the Trial Subscription solely for the purpose of evaluation for the purpose of determining whether to purchase a for-pay subscription.  You may not use production data in conjunction with your Trial Subscription. 
 
 * Microsoft does not provide any support for the Trial Subscription.  Moreover, the Trial Subscription is excluded from the Service Level Agreements (SLAs) and limited warranties that would otherwise apply for a for-pay subscription. 
+
+
+Retrun to the original page 
