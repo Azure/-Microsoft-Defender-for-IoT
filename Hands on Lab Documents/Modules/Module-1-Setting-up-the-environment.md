@@ -22,7 +22,7 @@ Please note - This link is private and will expiree in 3 days.
 
 To Deploy The Sensor VM, click below button to generate a template deployment installation 
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FContoso-Hotels-Security%2FDefenderForIOT%2Fmain%2FDeploySensorV22%2Fazuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2F-Microsoft-Defender-for-IoT%2Fmain%2FHands%2520on%2520Lab%2520Documents%2Fazuredeploy.json" target="_blank">
   <img src="https://aka.ms/deploytoazurebutton" scale="0">
 </a>
 
