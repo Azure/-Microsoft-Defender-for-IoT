@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.5.6.12127",
-      "templateHash": "7996432184875687161"
+      "version": "0.8.9.13224",
+      "templateHash": "14110597708575040212"
     }
   },
   "parameters": {
@@ -17,8 +17,16 @@
       "type": "bool",
       "defaultValue": true
     },
+    "putPasswordToKeyVault": {
+      "type": "bool",
+      "defaultValue": true
+    },
     "sourceVHDURL": {
       "type": "string"
+    },
+    "sensorCount": {
+      "type": "int",
+      "defaultValue": 1
     }
   },
   "resources": [
@@ -45,8 +53,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.5.6.12127",
-              "templateHash": "14306015180356350108"
+              "version": "0.8.9.13224",
+              "templateHash": "16458369488882458730"
             }
           },
           "parameters": {
@@ -147,9 +155,13 @@
                   {
                     "name": "targetscriptURL",
                     "secureValue": "[format('{0}scripts/post-deploy.sh?{1}', reference(resourceId('Microsoft.Storage/storageAccounts', format('custom{0}', uniqueString(resourceGroup().id)))).primaryEndpoints.blob, listServiceSAS(format('custom{0}', uniqueString(resourceGroup().id)), '2021-08-01', createObject('canonicalizedResource', format('/blob/{0}/scripts', format('custom{0}', uniqueString(resourceGroup().id))), 'signedResource', 'c', 'signedProtocol', 'https', 'signedPermission', 'rwl', 'signedServices', 'b', 'signedExpiry', variables('customExpiry'))).serviceSasToken)]"
+                  },
+                  {
+                    "name": "resetpassscriptURL",
+                    "secureValue": "[format('{0}scripts/reset-password.sh?{1}', reference(resourceId('Microsoft.Storage/storageAccounts', format('custom{0}', uniqueString(resourceGroup().id)))).primaryEndpoints.blob, listServiceSAS(format('custom{0}', uniqueString(resourceGroup().id)), '2021-08-01', createObject('canonicalizedResource', format('/blob/{0}/scripts', format('custom{0}', uniqueString(resourceGroup().id))), 'signedResource', 'c', 'signedProtocol', 'https', 'signedPermission', 'rwl', 'signedServices', 'b', 'signedExpiry', variables('customExpiry'))).serviceSasToken)]"
                   }
                 ],
-                "scriptContent": "      echo \"Create script for customscript extension...\"\r\n      mkdir /var/log/scripts\r\n      touch /var/log/scripts/post-deploy.sh\r\n      echo '#!/bin/bash' > /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MONITOR_INTERFACES=\\)\\(.*\\)/\\1\\\"local_listener\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_INTERFACE=\\)\\(.*\\)/\\1\\\"eth0\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'ipaddr=$(ip addr show eth0 | grep \"inet\\b\" | awk '\"'\"'{print $2}'\"'\"' | cut -d/ -f1)' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_IP_ADDRESS=\\)\\(.*\\)/\\1\\\"$ipaddr\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(ERSPAN_INTERFACES=\\)\\(.*\\)/\\1\\\"\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'netmask=$(ifconfig eth0 | awk '\"'\"'/netmask/{split($4,a,\":\"); print a[1]}'\"'\"')' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_SUBNET=\\)\\(.*\\)/\\1\\\"$netmask\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'gateway=$(route -n | awk '\"'\"'{print $2}'\"'\"' | head -3 | tail -1)' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_GATEWAY=\\)\\(.*\\)/\\1\\\"$gateway\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'dnsip=$(systemd-resolve --status | grep -i \"DNS Servers\" | awk '\"'\"'{print $3}'\"'\"')' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_DNS=\\)\\(.*\\)/\\1\\\"$dnsip\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(SENSOR_HOSTNAME=\\)\\(.*\\)/\\1\\\"sensortest\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(IS_DEBUG=\\)\\(.*\\)/\\1\\\"False\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(RUN_PROXY=\\)\\(.*\\)/\\1\\\"false\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'cd /opt/sensor/active/' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo /opt/sensor/active/compose/shutdown.sh' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo /opt/sensor/active/compose/startup.sh' >> /var/log/scripts/post-deploy.sh\r\n      echo \"Setup AzCopy..\"\r\n      mkdir -p tmp\r\n      cd tmp\r\n      wget -O azcopy_v10.tar.gz https://azcopyvnext.azureedge.net/release20210920/azcopy_linux_amd64_10.12.2.tar.gz && tar -xf azcopy_v10.tar.gz --strip-components=1\r\n      ./azcopy copy \"$sourceURL\" \"$targetVHDURL\"\r\n      ./azcopy copy \"/var/log/scripts/post-deploy.sh\" \"$targetscriptURL\"\r\n    "
+                "scriptContent": "      echo \"Create script for customscript extension...\"\r\n      mkdir /var/log/scripts\r\n      touch /var/log/scripts/post-deploy.sh\r\n      echo '#!/bin/bash' > /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MONITOR_INTERFACES=\\)\\(.*\\)/\\1\\\"local_listener\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_INTERFACE=\\)\\(.*\\)/\\1\\\"eth0\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'ipaddr=$(ip addr show eth0 | grep \"inet\\b\" | awk '\"'\"'{print $2}'\"'\"' | cut -d/ -f1)' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_IP_ADDRESS=\\)\\(.*\\)/\\1\\\"$ipaddr\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(ERSPAN_INTERFACES=\\)\\(.*\\)/\\1\\\"\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'netmask=$(ifconfig eth0 | awk '\"'\"'/netmask/{split($4,a,\":\"); print a[1]}'\"'\"')' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_SUBNET=\\)\\(.*\\)/\\1\\\"$netmask\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'gateway=$(route -n | awk '\"'\"'{print $2}'\"'\"' | head -3 | tail -1)' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_GATEWAY=\\)\\(.*\\)/\\1\\\"$gateway\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'dnsip=$(systemd-resolve --status | grep -i \"DNS Servers\" | awk '\"'\"'{print $3}'\"'\"')' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_DNS=\\)\\(.*\\)/\\1\\\"$dnsip\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(SENSOR_HOSTNAME=\\)\\(.*\\)/\\1\\\"sensortest\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(IS_DEBUG=\\)\\(.*\\)/\\1\\\"False\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(RUN_PROXY=\\)\\(.*\\)/\\1\\\"false\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'cd /opt/sensor/active/' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo /opt/sensor/active/compose/shutdown.sh' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo /opt/sensor/active/compose/startup.sh' >> /var/log/scripts/post-deploy.sh\r\n      touch /var/log/scripts/reset-password.sh\r\n      echo '#!/bin/bash' >> /var/log/scripts/reset-password.sh\r\n      echo 'PASS=$(openssl rand -base64 20)' >> /var/log/scripts/reset-password.sh\r\n      echo 'if [ \"$3\" = \"true\" ]' >> /var/log/scripts/reset-password.sh\r\n      echo 'then' >> /var/log/scripts/reset-password.sh\r\n      echo 'curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash' >> /var/log/scripts/reset-password.sh\r\n      echo 'az login --identity --allow-no-subscriptions --username $1' >> /var/log/scripts/reset-password.sh\r\n      echo 'secretname=$(hostname)' >> /var/log/scripts/reset-password.sh\r\n      echo 'az keyvault secret set --vault-name $2 --name $secretname --value $PASS > /dev/null' >> /var/log/scripts/reset-password.sh\r\n      echo 'else' >> /var/log/scripts/reset-password.sh\r\n      echo 'echo $PASS' >> /var/log/scripts/reset-password.sh\r\n      echo 'fi' >> /var/log/scripts/reset-password.sh\r\n      echo 'mkdir /var/log/scripts1' >> /var/log/scripts/reset-password.sh\r\n      echo 'touch /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo 'echo \"sudo cyberx-users-password-reset -u cyberx -p \\\"$PASS\\\" 1> /dev/null\" >> /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo 'echo \"sudo cyberx-users-password-reset -u cyberx_host -p \\\"$PASS\\\" 1> /dev/null\" >> /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo 'echo \"sudo cyberx-users-password-reset -u support -p \\\"$PASS\\\" 1> /dev/null\" >> /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo 'sensorappname=$(docker ps --format '{{.Names}}' | grep \"sensor\")' >> /var/log/scripts/reset-password.sh\r\n      echo 'docker exec -i $sensorappname bash < /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo \"Setup AzCopy..\"\r\n      mkdir -p tmp\r\n      cd tmp\r\n      wget -O azcopy_v10.tar.gz https://azcopyvnext.azureedge.net/release20210920/azcopy_linux_amd64_10.12.2.tar.gz && tar -xf azcopy_v10.tar.gz --strip-components=1\r\n      ./azcopy copy \"$sourceURL\" \"$targetVHDURL\"\r\n      ./azcopy copy \"/var/log/scripts/post-deploy.sh\" \"$targetscriptURL\"\r\n      ./azcopy copy \"/var/log/scripts/reset-password.sh\" \"$resetpassscriptURL\"\r\n    "
               },
               "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', format('custom{0}', uniqueString(resourceGroup().id)))]"
@@ -195,6 +207,12 @@
           },
           "deployPublicIP": {
             "value": "[parameters('deployPublicIP')]"
+          },
+          "putPasswordToKeyVault": {
+            "value": "[parameters('putPasswordToKeyVault')]"
+          },
+          "sensorCount": {
+            "value": "[parameters('sensorCount')]"
           }
         },
         "template": {
@@ -203,8 +221,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.5.6.12127",
-              "templateHash": "7270971559560876871"
+              "version": "0.8.9.13224",
+              "templateHash": "3762260625650612503"
             }
           },
           "parameters": {
@@ -240,50 +258,46 @@
             "deployPublicIP": {
               "type": "bool",
               "defaultValue": true
+            },
+            "putPasswordToKeyVault": {
+              "type": "bool",
+              "defaultValue": true
+            },
+            "sensorCount": {
+              "type": "int"
             }
           },
           "variables": {
-            "imagename": "[format('{0}vm{1}{2}-image', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix'))]",
+            "copy": [
+              {
+                "name": "pipProperties",
+                "count": "[length(range(0, parameters('sensorCount')))]",
+                "input": {
+                  "id": "[resourceId('Microsoft.Network/publicIPAddresses', format('{0}{1}', variables('pipname'), range(0, parameters('sensorCount'))[range(0, parameters('sensorCount'))[copyIndex('pipProperties')]]))]",
+                  "properties": {
+                    "deleteOption": "Delete"
+                  }
+                }
+              }
+            ],
             "pipname": "[format('{0}vm{1}{2}-pip', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix'))]",
             "nsgname": "[format('{0}NSG{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix'))]",
             "nsgidObject": {
               "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgname'))]"
             },
             "vmNICname": "[format('{0}vm{1}{2}-nic01', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix'))]",
-            "pipProperties": {
-              "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('pipname'))]",
-              "properties": {
-                "deleteOption": "Delete"
-              }
-            },
-            "vmname": "[format('{0}vm{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix'))]"
+            "imagename": "[format('{0}vm{1}{2}-image', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix'))]"
           },
           "resources": [
             {
-              "type": "Microsoft.Compute/images",
-              "apiVersion": "2021-11-01",
-              "name": "[variables('imagename')]",
-              "location": "[parameters('location')]",
-              "properties": {
-                "hyperVGeneration": "V1",
-                "storageProfile": {
-                  "dataDisks": [],
-                  "osDisk": {
-                    "blobUri": "[format('{0}vhds/testvm.vhd', reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2021-08-01').primaryEndpoints.blob)]",
-                    "diskSizeGB": 128,
-                    "osType": "Linux",
-                    "osState": "Generalized",
-                    "storageAccountType": "[parameters('diskSKU')]"
-                  },
-                  "zoneResilient": false
-                }
-              }
-            },
-            {
               "condition": "[parameters('deployPublicIP')]",
+              "copy": {
+                "name": "pipResource",
+                "count": "[length(range(0, parameters('sensorCount')))]"
+              },
               "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2021-05-01",
-              "name": "[variables('pipname')]",
+              "apiVersion": "2020-11-01",
+              "name": "[format('{0}{1}', variables('pipname'), range(0, parameters('sensorCount'))[copyIndex()])]",
               "location": "[parameters('location')]",
               "properties": {
                 "publicIPAllocationMethod": "Static"
@@ -293,9 +307,49 @@
               }
             },
             {
+              "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+              "apiVersion": "2021-09-30-preview",
+              "name": "[format('{0}vmsIdentity{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix'))]",
+              "location": "[parameters('location')]"
+            },
+            {
+              "condition": "[parameters('putPasswordToKeyVault')]",
+              "type": "Microsoft.KeyVault/vaults",
+              "apiVersion": "2021-11-01-preview",
+              "name": "[format('{0}KV{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "accessPolicies": [
+                  {
+                    "objectId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}vmsIdentity{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix')))).principalId]",
+                    "permissions": {
+                      "secrets": [
+                        "get",
+                        "list",
+                        "set"
+                      ]
+                    },
+                    "tenantId": "[subscription().tenantId]"
+                  }
+                ],
+                "enablePurgeProtection": true,
+                "enableRbacAuthorization": false,
+                "enableSoftDelete": true,
+                "sku": {
+                  "family": "A",
+                  "name": "standard"
+                },
+                "softDeleteRetentionInDays": 7,
+                "tenantId": "[subscription().tenantId]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}vmsIdentity{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix')))]"
+              ]
+            },
+            {
               "condition": "[parameters('deployPublicIP')]",
               "type": "Microsoft.Network/networkSecurityGroups",
-              "apiVersion": "2021-05-01",
+              "apiVersion": "2020-11-01",
               "name": "[variables('nsgname')]",
               "location": "[parameters('location')]",
               "properties": {
@@ -318,7 +372,7 @@
             },
             {
               "type": "Microsoft.Network/virtualNetworks",
-              "apiVersion": "2021-05-01",
+              "apiVersion": "2020-11-01",
               "name": "[format('{0}vnet{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix'))]",
               "location": "[parameters('location')]",
               "properties": {
@@ -343,9 +397,13 @@
               ]
             },
             {
+              "copy": {
+                "name": "VMnic",
+                "count": "[length(range(0, parameters('sensorCount')))]"
+              },
               "type": "Microsoft.Network/networkInterfaces",
               "apiVersion": "2021-02-01",
-              "name": "[variables('vmNICname')]",
+              "name": "[format('{0}{1}', variables('vmNICname'), range(0, parameters('sensorCount'))[copyIndex()])]",
               "location": "[parameters('location')]",
               "properties": {
                 "ipConfigurations": [
@@ -356,21 +414,51 @@
                       "subnet": {
                         "id": "[reference(resourceId('Microsoft.Network/virtualNetworks', format('{0}vnet{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix')))).subnets[0].id]"
                       },
-                      "publicIPAddress": "[if(parameters('deployPublicIP'), variables('pipProperties'), json('null'))]"
+                      "publicIPAddress": "[if(parameters('deployPublicIP'), variables('pipProperties')[range(0, parameters('sensorCount'))[copyIndex()]], json('null'))]"
                     }
                   }
                 ]
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', variables('pipname'))]",
+                "pipResource",
                 "[resourceId('Microsoft.Network/virtualNetworks', format('{0}vnet{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix')))]"
               ]
             },
             {
+              "type": "Microsoft.Compute/images",
+              "apiVersion": "2021-11-01",
+              "name": "[variables('imagename')]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "hyperVGeneration": "V1",
+                "storageProfile": {
+                  "dataDisks": [],
+                  "osDisk": {
+                    "blobUri": "[format('{0}vhds/testvm.vhd', reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2021-08-01').primaryEndpoints.blob)]",
+                    "diskSizeGB": 128,
+                    "osType": "Linux",
+                    "osState": "Generalized",
+                    "storageAccountType": "[parameters('diskSKU')]"
+                  },
+                  "zoneResilient": false
+                }
+              },
+              "dependsOn": [
+                "VMnic"
+              ]
+            },
+            {
+              "copy": {
+                "name": "vm",
+                "count": "[length(range(0, parameters('sensorCount')))]",
+                "mode": "serial",
+                "batchSize": 2
+              },
               "type": "Microsoft.Compute/virtualMachines",
               "apiVersion": "2021-03-01",
-              "name": "[variables('vmname')]",
+              "name": "[format('{0}vm{1}{2}{3}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), range(0, parameters('sensorCount'))[copyIndex()], parameters('resourceNameSuffix'))]",
               "location": "[parameters('location')]",
+              "identity": "[if(parameters('putPasswordToKeyVault'), createObject('type', 'UserAssigned', 'userAssignedIdentities', createObject(format('{0}', resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}vmsIdentity{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix')))), createObject())), createObject('type', 'SystemAssigned'))]",
               "properties": {
                 "hardwareProfile": {
                   "vmSize": "[parameters('vmSize')]"
@@ -390,12 +478,12 @@
                 "networkProfile": {
                   "networkInterfaces": [
                     {
-                      "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vmNICname'))]"
+                      "id": "[resourceId('Microsoft.Network/networkInterfaces', format('{0}{1}', variables('vmNICname'), range(0, parameters('sensorCount'))[range(0, parameters('sensorCount'))[copyIndex()]]))]"
                     }
                   ]
                 },
                 "osProfile": {
-                  "computerName": "Sensor",
+                  "computerName": "[format('{0}vm{1}{2}{3}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), range(0, parameters('sensorCount'))[copyIndex()], parameters('resourceNameSuffix'))]",
                   "adminUsername": "[parameters('adminusername')]",
                   "adminPassword": "[parameters('adminpass')]",
                   "linuxConfiguration": {
@@ -412,15 +500,37 @@
                 }
               },
               "dependsOn": [
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}vmsIdentity{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix')))]",
                 "[resourceId('Microsoft.Compute/images', variables('imagename'))]",
-                "[resourceId('Microsoft.Network/networkInterfaces', variables('vmNICname'))]"
+                "[resourceId('Microsoft.Network/networkInterfaces', format('{0}{1}', variables('vmNICname'), range(0, parameters('sensorCount'))[range(0, parameters('sensorCount'))[copyIndex()]]))]"
               ]
             }
           ],
           "outputs": {
+            "pipObject": {
+              "type": "array",
+              "copy": {
+                "count": "[length(range(0, parameters('sensorCount')))]",
+                "input": {
+                  "Name": "[if(parameters('deployPublicIP'), format('{0}{1}', variables('pipname'), range(0, parameters('sensorCount'))[range(0, parameters('sensorCount'))[copyIndex()]]), 'n/a')]",
+                  "ipAddress": "[if(parameters('deployPublicIP'), reference(resourceId('Microsoft.Network/publicIPAddresses', format('{0}{1}', variables('pipname'), range(0, parameters('sensorCount'))[range(0, parameters('sensorCount'))[copyIndex()]])), '2020-11-01').ipAddress, 'n/a')]"
+                }
+              }
+            },
             "vmname": {
+              "type": "array",
+              "copy": {
+                "count": "[length(range(0, parameters('sensorCount')))]",
+                "input": "[format('{0}vm{1}{2}{3}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), range(0, parameters('sensorCount'))[range(0, parameters('sensorCount'))[copyIndex()]], parameters('resourceNameSuffix'))]"
+              }
+            },
+            "identityclientid": {
               "type": "string",
-              "value": "[variables('vmname')]"
+              "value": "[if(parameters('putPasswordToKeyVault'), reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}vmsIdentity{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix')))).clientId, 'n/a')]"
+            },
+            "kvname": {
+              "type": "string",
+              "value": "[if(parameters('putPasswordToKeyVault'), format('{0}KV{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix')), 'n/a')]"
             }
           }
         }
@@ -430,9 +540,13 @@
       ]
     },
     {
+      "copy": {
+        "name": "postDeployModule",
+        "count": "[length(range(0, parameters('sensorCount')))]"
+      },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
-      "name": "Post-Deploy",
+      "name": "[format('Post-Deploy{0}', range(0, parameters('sensorCount'))[copyIndex()])]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -443,7 +557,7 @@
             "value": "[parameters('location')]"
           },
           "vmanme": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'VMdeployment')).outputs.vmname.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'VMdeployment')).outputs.vmname.value[range(0, parameters('sensorCount'))[copyIndex()]]]"
           },
           "storageName": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'copyvhd')).outputs.storagename.value]"
@@ -455,8 +569,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.5.6.12127",
-              "templateHash": "17460483991552605930"
+              "version": "0.8.9.13224",
+              "templateHash": "1492729948392791557"
             }
           },
           "parameters": {
@@ -501,6 +615,113 @@
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'copyvhd')]",
         "[resourceId('Microsoft.Resources/deployments', 'VMdeployment')]"
+      ]
+    },
+    {
+      "copy": {
+        "name": "resetpassModule",
+        "count": "[length(range(0, parameters('sensorCount')))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('Reset-password{0}', range(0, parameters('sensorCount'))[copyIndex()])]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "vmanme": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'VMdeployment')).outputs.vmname.value[range(0, parameters('sensorCount'))[copyIndex()]]]"
+          },
+          "storageName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'copyvhd')).outputs.storagename.value]"
+          },
+          "identityClientID": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'VMdeployment')).outputs.identityclientid.value]"
+          },
+          "kvname": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'VMdeployment')).outputs.kvname.value]"
+          },
+          "putPasswordToKeyVault": {
+            "value": "[parameters('putPasswordToKeyVault')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.8.9.13224",
+              "templateHash": "3764318618890444508"
+            }
+          },
+          "parameters": {
+            "vmanme": {
+              "type": "string"
+            },
+            "storageName": {
+              "type": "string"
+            },
+            "identityClientID": {
+              "type": "string"
+            },
+            "kvname": {
+              "type": "string"
+            },
+            "putPasswordToKeyVault": {
+              "type": "bool",
+              "defaultValue": true
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]"
+            }
+          },
+          "variables": {
+            "booltotext": "[if(parameters('putPasswordToKeyVault'), 'true', 'false')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Compute/virtualMachines/extensions",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/{1}', parameters('vmanme'), 'runCustomScript')]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "autoUpgradeMinorVersion": true,
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.1",
+                "settings": {
+                  "skipDos2Unix": false
+                },
+                "protectedSettings": {
+                  "commandToExecute": "[format('sh reset-password.sh {0} {1} {2}', parameters('identityClientID'), parameters('kvname'), variables('booltotext'))]",
+                  "storageAccountName": "[parameters('storageName')]",
+                  "storageAccountKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageName')), '2021-08-01').keys[0].value]",
+                  "fileUris": [
+                    "[format('{0}scripts/reset-password.sh', reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageName')), '2021-08-01').primaryEndpoints.blob)]"
+                  ]
+                }
+              }
+            }
+          ],
+          "outputs": {
+            "vmObject": {
+              "type": "object",
+              "value": "[if(parameters('putPasswordToKeyVault'), createObject('VMName', parameters('vmanme'), 'Password', format('Please find in Key Vault {0}', parameters('kvname'))), createObject('VMName', parameters('vmanme'), 'Password', replace(replace(first(split(string(skip(split(reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('vmanme'), 'runCustomScript')).instanceView.statuses[0].message, '[stdout]'), 1)), '[stderr]')), '\\n', ''), '[\"', '')))]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'copyvhd')]",
+        "[resourceId('Microsoft.Resources/deployments', 'VMdeployment')]",
+        "postDeployModule"
       ]
     }
   ]
