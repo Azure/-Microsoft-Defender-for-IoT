@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.8.9.13224",
-      "templateHash": "14110597708575040212"
+      "version": "0.9.1.41621",
+      "templateHash": "3115473339361949381"
     }
   },
   "parameters": {
@@ -53,8 +53,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.8.9.13224",
-              "templateHash": "16458369488882458730"
+              "version": "0.9.1.41621",
+              "templateHash": "15402447205284881499"
             }
           },
           "parameters": {
@@ -161,7 +161,7 @@
                     "secureValue": "[format('{0}scripts/reset-password.sh?{1}', reference(resourceId('Microsoft.Storage/storageAccounts', format('custom{0}', uniqueString(resourceGroup().id)))).primaryEndpoints.blob, listServiceSAS(format('custom{0}', uniqueString(resourceGroup().id)), '2021-08-01', createObject('canonicalizedResource', format('/blob/{0}/scripts', format('custom{0}', uniqueString(resourceGroup().id))), 'signedResource', 'c', 'signedProtocol', 'https', 'signedPermission', 'rwl', 'signedServices', 'b', 'signedExpiry', variables('customExpiry'))).serviceSasToken)]"
                   }
                 ],
-                "scriptContent": "      echo \"Create script for customscript extension...\"\r\n      mkdir /var/log/scripts\r\n      touch /var/log/scripts/post-deploy.sh\r\n      echo '#!/bin/bash' > /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MONITOR_INTERFACES=\\)\\(.*\\)/\\1\\\"local_listener\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_INTERFACE=\\)\\(.*\\)/\\1\\\"eth0\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'ipaddr=$(ip addr show eth0 | grep \"inet\\b\" | awk '\"'\"'{print $2}'\"'\"' | cut -d/ -f1)' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_IP_ADDRESS=\\)\\(.*\\)/\\1\\\"$ipaddr\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(ERSPAN_INTERFACES=\\)\\(.*\\)/\\1\\\"\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'netmask=$(ifconfig eth0 | awk '\"'\"'/netmask/{split($4,a,\":\"); print a[1]}'\"'\"')' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_SUBNET=\\)\\(.*\\)/\\1\\\"$netmask\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'gateway=$(route -n | awk '\"'\"'{print $2}'\"'\"' | head -3 | tail -1)' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_GATEWAY=\\)\\(.*\\)/\\1\\\"$gateway\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'dnsip=$(systemd-resolve --status | grep -i \"DNS Servers\" | awk '\"'\"'{print $3}'\"'\"')' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_DNS=\\)\\(.*\\)/\\1\\\"$dnsip\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(SENSOR_HOSTNAME=\\)\\(.*\\)/\\1\\\"sensortest\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(IS_DEBUG=\\)\\(.*\\)/\\1\\\"False\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(RUN_PROXY=\\)\\(.*\\)/\\1\\\"false\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'cd /opt/sensor/active/' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo /opt/sensor/active/compose/shutdown.sh' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo /opt/sensor/active/compose/startup.sh' >> /var/log/scripts/post-deploy.sh\r\n      touch /var/log/scripts/reset-password.sh\r\n      echo '#!/bin/bash' >> /var/log/scripts/reset-password.sh\r\n      echo 'PASS=$(openssl rand -base64 20)' >> /var/log/scripts/reset-password.sh\r\n      echo 'if [ \"$3\" = \"true\" ]' >> /var/log/scripts/reset-password.sh\r\n      echo 'then' >> /var/log/scripts/reset-password.sh\r\n      echo 'curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash' >> /var/log/scripts/reset-password.sh\r\n      echo 'az login --identity --allow-no-subscriptions --username $1' >> /var/log/scripts/reset-password.sh\r\n      echo 'secretname=$(hostname)' >> /var/log/scripts/reset-password.sh\r\n      echo 'az keyvault secret set --vault-name $2 --name $secretname --value $PASS > /dev/null' >> /var/log/scripts/reset-password.sh\r\n      echo 'else' >> /var/log/scripts/reset-password.sh\r\n      echo 'echo $PASS' >> /var/log/scripts/reset-password.sh\r\n      echo 'fi' >> /var/log/scripts/reset-password.sh\r\n      echo 'mkdir /var/log/scripts1' >> /var/log/scripts/reset-password.sh\r\n      echo 'touch /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo 'echo \"sudo cyberx-users-password-reset -u cyberx -p \\\"$PASS\\\" 1> /dev/null\" >> /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo 'echo \"sudo cyberx-users-password-reset -u cyberx_host -p \\\"$PASS\\\" 1> /dev/null\" >> /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo 'echo \"sudo cyberx-users-password-reset -u support -p \\\"$PASS\\\" 1> /dev/null\" >> /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo 'sensorappname=$(docker ps --format '{{.Names}}' | grep \"sensor\")' >> /var/log/scripts/reset-password.sh\r\n      echo 'docker exec -i $sensorappname bash < /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo \"Setup AzCopy..\"\r\n      mkdir -p tmp\r\n      cd tmp\r\n      wget -O azcopy_v10.tar.gz https://azcopyvnext.azureedge.net/release20210920/azcopy_linux_amd64_10.12.2.tar.gz && tar -xf azcopy_v10.tar.gz --strip-components=1\r\n      ./azcopy copy \"$sourceURL\" \"$targetVHDURL\"\r\n      ./azcopy copy \"/var/log/scripts/post-deploy.sh\" \"$targetscriptURL\"\r\n      ./azcopy copy \"/var/log/scripts/reset-password.sh\" \"$resetpassscriptURL\"\r\n    "
+                "scriptContent": "      echo \"Create script for customscript extension...\"\r\n      mkdir /var/log/scripts\r\n      touch /var/log/scripts/post-deploy.sh\r\n      echo '#!/bin/bash' > /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MONITOR_INTERFACES=\\)\\(.*\\)/\\1\\\"local_listener\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_INTERFACE=\\)\\(.*\\)/\\1\\\"eth0\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'ipaddr=$(ip addr show eth0 | grep \"inet\\b\" | awk '\"'\"'{print $2}'\"'\"' | cut -d/ -f1)' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_IP_ADDRESS=\\)\\(.*\\)/\\1\\\"$ipaddr\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(ERSPAN_INTERFACES=\\)\\(.*\\)/\\1\\\"\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'netmask=$(ifconfig eth0 | awk '\"'\"'/netmask/{split($4,a,\":\"); print a[1]}'\"'\"')' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_SUBNET=\\)\\(.*\\)/\\1\\\"$netmask\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'gateway=$(route -n | awk '\"'\"'{print $2}'\"'\"' | head -3 | tail -1)' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_GATEWAY=\\)\\(.*\\)/\\1\\\"$gateway\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'dnsip=$(systemd-resolve --status | grep -i \"DNS Servers\" | awk '\"'\"'{print $3}'\"'\"')' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(MGMT_DNS=\\)\\(.*\\)/\\1\\\"$dnsip\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(SENSOR_HOSTNAME=\\)\\(.*\\)/\\1\\\"sensortest\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(IS_DEBUG=\\)\\(.*\\)/\\1\\\"False\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo sed -i \"s/\\(RUN_PROXY=\\)\\(.*\\)/\\1\\\"false\\\"/g\" /opt/sensor/active/etc/network' >> /var/log/scripts/post-deploy.sh\r\n      echo 'cd /opt/sensor/active/' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo /opt/sensor/active/compose/shutdown.sh' >> /var/log/scripts/post-deploy.sh\r\n      echo 'sudo /opt/sensor/active/compose/startup.sh' >> /var/log/scripts/post-deploy.sh\r\n      touch /var/log/scripts/reset-password.sh\r\n      echo '#!/bin/bash' >> /var/log/scripts/reset-password.sh\r\n      echo 'PASS=$(openssl rand -base64 20)' >> /var/log/scripts/reset-password.sh\r\n      echo 'if [ \"$3\" = \"true\" ]' >> /var/log/scripts/reset-password.sh\r\n      echo 'then' >> /var/log/scripts/reset-password.sh\r\n      echo 'sudo rm /var/lib/apt/lists/lock' >> /var/log/scripts/reset-password.sh\r\n      echo 'sudo rm /var/lib/dpkg/lock' >> /var/log/scripts/reset-password.sh\r\n      echo 'sudo rm /var/lib/dpkg/lock-frontend' >> /var/log/scripts/reset-password.sh\r\n      echo 'sudo rm /var/cache/apt/archives/lock' >> /var/log/scripts/reset-password.sh\r\n      echo 'sudo dpkg --configure -a' >> /var/log/scripts/reset-password.sh\r\n      echo 'curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash' >> /var/log/scripts/reset-password.sh\r\n      echo 'az login --identity --allow-no-subscriptions --username $1' >> /var/log/scripts/reset-password.sh\r\n      echo 'secretname=$(hostname)' >> /var/log/scripts/reset-password.sh\r\n      echo 'az keyvault secret set --vault-name $2 --name $secretname --value $PASS > /dev/null' >> /var/log/scripts/reset-password.sh\r\n      echo 'else' >> /var/log/scripts/reset-password.sh\r\n      echo 'echo $PASS' >> /var/log/scripts/reset-password.sh\r\n      echo 'fi' >> /var/log/scripts/reset-password.sh\r\n      echo 'mkdir /var/log/scripts1' >> /var/log/scripts/reset-password.sh\r\n      echo 'touch /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo 'echo \"sudo cyberx-users-password-reset -u cyberx -p \\\"$PASS\\\" 1> /dev/null\" >> /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo 'echo \"sudo cyberx-users-password-reset -u cyberx_host -p \\\"$PASS\\\" 1> /dev/null\" >> /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo 'echo \"sudo cyberx-users-password-reset -u support -p \\\"$PASS\\\" 1> /dev/null\" >> /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo 'sensorappname=$(docker ps --format '{{.Names}}' | grep \"sensor\")' >> /var/log/scripts/reset-password.sh\r\n      echo 'docker exec -i $sensorappname bash < /var/log/scripts1/reset-password.sh' >> /var/log/scripts/reset-password.sh\r\n      echo \"Setup AzCopy..\"\r\n      mkdir -p tmp\r\n      cd tmp\r\n      wget -O azcopy_v10.tar.gz https://azcopyvnext.azureedge.net/release20210920/azcopy_linux_amd64_10.12.2.tar.gz && tar -xf azcopy_v10.tar.gz --strip-components=1\r\n      ./azcopy copy \"$sourceURL\" \"$targetVHDURL\"\r\n      ./azcopy copy \"/var/log/scripts/post-deploy.sh\" \"$targetscriptURL\"\r\n      ./azcopy copy \"/var/log/scripts/reset-password.sh\" \"$resetpassscriptURL\"\r\n    "
               },
               "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', format('custom{0}', uniqueString(resourceGroup().id)))]"
@@ -221,8 +221,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.8.9.13224",
-              "templateHash": "3762260625650612503"
+              "version": "0.9.1.41621",
+              "templateHash": "8254621997716549172"
             }
           },
           "parameters": {
@@ -316,7 +316,7 @@
               "condition": "[parameters('putPasswordToKeyVault')]",
               "type": "Microsoft.KeyVault/vaults",
               "apiVersion": "2021-11-01-preview",
-              "name": "[format('{0}KV{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix'))]",
+              "name": "[format('{0}KV{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id, parameters('adminpass')), parameters('resourceNameSuffix'))]",
               "location": "[parameters('location')]",
               "properties": {
                 "accessPolicies": [
@@ -530,7 +530,7 @@
             },
             "kvname": {
               "type": "string",
-              "value": "[if(parameters('putPasswordToKeyVault'), format('{0}KV{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id), parameters('resourceNameSuffix')), 'n/a')]"
+              "value": "[if(parameters('putPasswordToKeyVault'), format('{0}KV{1}{2}', parameters('resourceNamePrefix'), uniqueString(resourceGroup().id, parameters('adminpass')), parameters('resourceNameSuffix')), 'n/a')]"
             }
           }
         }
@@ -569,8 +569,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.8.9.13224",
-              "templateHash": "1492729948392791557"
+              "version": "0.9.1.41621",
+              "templateHash": "12048871710600314787"
             }
           },
           "parameters": {
@@ -656,8 +656,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.8.9.13224",
-              "templateHash": "3764318618890444508"
+              "version": "0.9.1.41621",
+              "templateHash": "10898360430525999404"
             }
           },
           "parameters": {
