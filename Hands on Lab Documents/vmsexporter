@@ -1,0 +1,55 @@
+import xlsxwriter
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
+from azure.mgmt.compute import ComputeManagementClient
+from azure.mgmt.network import NetworkManagementClient
+
+# Azure subscription ID and resource group name
+subscription_id = "<your-subscription-id>"
+resource_group_name = "<your-resource-group-name>"
+
+# Azure credentials
+credential = DefaultAzureCredential()
+
+# Initialize clients
+compute_client = ComputeManagementClient(credential, subscription_id)
+network_client = NetworkManagementClient(credential, subscription_id)
+
+# Key Vault details
+key_vault_name = "<your-key-vault-name>"
+key_vault_url = f"https://{key_vault_name}.vault.azure.net"
+secret_client = SecretClient(key_vault_url, credential)
+
+# Get all virtual machines in the resource group
+virtual_machines = compute_client.virtual_machines.list(resource_group_name)
+
+# Iterate over each virtual machine
+for vm in virtual_machines:
+    # Get virtual machine details
+    vm_name = vm.name
+
+    # Get virtual machine IP address
+    network_interface_id = vm.network_profile.network_interfaces[0].id
+    network_interface_name = network_interface_id.split('/')[-1]
+    network_interface = network_client.network_interfaces.get(resource_group_name, network_interface_name)
+    ip_configuration = network_interface.ip_configurations[0]
+    ip_address = ip_configuration.private_ip_address
+
+    # Get secret from Key Vault
+    secret_name = vm_name
+    secret = secret_client.get_secret(secret_name)
+
+    # Create Excel file
+    workbook = xlsxwriter.Workbook(f"{vm_name}.xlsx")
+    worksheet = workbook.add_worksheet()
+
+    # Write data to the Excel file
+    worksheet.write(0, 0, "Name")
+    worksheet.write(0, 1, "IP Address")
+    worksheet.write(0, 2, "Secret")
+
+    worksheet.write(1, 0, vm_name)
+    worksheet.write(1, 1, ip_address)
+    worksheet.write(1, 2, secret.value)
+
+    workbook.close()
